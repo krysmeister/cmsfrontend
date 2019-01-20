@@ -1,0 +1,30 @@
+{% load menu_tags %}
+
+<li class="nav-item ">
+        {% for child in children %}
+    <!-- no child pages  -->
+            {% if child.is_leaf_node %}
+                <li class="nav-item"><a class="nav-link" href="{{ child.get_absolute_url }}">{{child.get_menu_title }}</a></li>
+            {% endif %}
+    <!-- /no child pages  -->
+    <!-- has child pages  -->
+            {% if not child.is_leaf_node or child.ancestor %}
+                <li class="nav-item dropdown active">
+                    <a href="#" class="nav-link" data-toggle="dropdown">
+                    {{child.get_menu_title }}
+                    <span class="tw-indicator"><i class="fa fa-angle-down"></i></span>
+                    <ul class="dropdown-menu tw-dropdown-menu">
+                        {% if child.get_descendants %}
+                            {% for kid in child.get_descendants %}
+                                <li>
+                                    <a href="{{ kid.get_absolute_url }}">{{kid.get_menu_title }}</a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endif %}
+    <!-- /has child pages  -->
+        {% endfor %} 
+    <!-- /end for child -->
+</li>
